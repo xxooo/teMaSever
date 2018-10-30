@@ -1,7 +1,6 @@
 <template>
   <div id="appsub">
     <router-view/>
-    app
   </div>
 </template>
 

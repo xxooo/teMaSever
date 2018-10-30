@@ -1,5 +1,4 @@
 <template>
-<div>
   <el-container>
     <el-main>
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
@@ -18,7 +17,6 @@
       </el-form>
     </el-main>
   </el-container>
-</div>
 </template>
 
 <script>

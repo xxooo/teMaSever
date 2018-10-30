@@ -4,6 +4,7 @@ import router from './router.js';
 import $ from 'jquery'
 import axios from 'axios';
 import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 
 import util from './assets/js/util.js';
@@ -18,7 +19,6 @@ Vue.use(request);
 Vue.config.productionTip = false;
 
 window.router = router;
-// window.store = store;
 window.axios = axios;
 window._g = _g;
 window.cookie = cookie;
