@@ -17,10 +17,9 @@ const router = new Router({
       children: [
         { path: '/manage/userList', name: 'userList',
           meta: {                                
-              //requireAuth: true,
-              requireAuth: false
+              requireAuth: true
           },
-          component: r => require.ensure([], () => r(require('@/components/apps/app/userList')), 'userList'), meta: { requiresAuth: false }
+          component: r => require.ensure([], () => r(require('@/components/apps/app/userList')), 'userList'), meta: { requiresAuth: true }
         }
       ]
     }

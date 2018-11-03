@@ -8,6 +8,11 @@
         <el-form-item label="密　码：" prop="password">
           <el-input v-model="ruleForm.password" size="mini" placeholder="请输入密码"></el-input>
         </el-form-item>
+        <el-form-item label="验证码:" prop="securitycode">
+          <el-input v-model="ruleForm.securitycode" size="mini" placeholder="验证码"> </el-input>
+          <img class="yanzhengimg" :src="'data:image/png;base64,'+tupian">
+          <!-- <img @click="getyanzheng" :src="'data:image/png;base64,'+tupian" height="45px" width="100px"> -->
+        </el-form-item>
                           <!-- <el-form-item label="验证码：" prop="securitycode">
                             <el-input v-model="ruleForm.securitycode" size="mini" placeholder="验证码"> <img src="data:image/png;base64,tupian"></el-input>
                           </el-form-item> -->
@@ -48,12 +53,12 @@ export default {
     }
   },
   created() {
-    //this.getyanzheng();
-    
+    this.getyanzheng();
+    this.logindev();
     if (window.ENV == 'dev') {
 
       //console.log('研发自动登录');
-
+      this.logindev();
     } else {
       //普通用户登录
        //this.$router.push({name: 'login'});
@@ -65,30 +70,51 @@ export default {
     async getyanzheng() {
       let res = await this.$get(`${window.url}/api/captcha.jpg`);
 
-      if(res.code===200){
+      if(res.code===0){
         this.tupian = res.tupian;
         this.yanzhengma = res.yanzhengma;
       }
     },
-    async login() {
+    async login(formName) {
+      let obj = {
+                username: this.username,
+                password: this.password
+              };
 
-      this.$router.push({name: 'userList'});
+              let ret = await this.$post(`${window.url}/api/login`, obj);
+              if(ret.code === 0) {
 
-      // let obj = {
-      //   username: this.ruleForm.username,
-      //   password: this.ruleForm.password
-      // };
+                cookieParser.setCookie("accesstoken", ret.token);
+                cookieParser.setCookie("setRuleId", ret.ruleId);
 
-      // // let obj = {
-      // //   password: 'a111111',
-      // //   username: 'aydwhuiyuan1'
-      // // };
+                if(ret.ruleId == 1) {
+                  this.$router.push({name: 'userList'});
+                } else {
+                  this.$router.push({name: 'login'});
+                }
+                
+              }
+               
+    },
+    async logindev() {
+      let that = this;
 
-      // let ret = await this.$post(`${window.url}/api/login`, obj);
-      // if(ret.code === 200) {
-      //   cookieParser.setCookie("accesstoken", ret.token);
-      //   this.$router.push({name: 'userList'});
-      // }
+               let obj = {
+                username: 'admin',
+                password: '123456'
+              };
+
+              let ret = await this.$post(`${window.url}/api/login`, obj);
+              if(ret.code === 0) {
+                cookieParser.setCookie("accesstoken", ret.token);
+                cookieParser.setCookie("setRuleId", ret.ruleId);
+
+                if(ret.ruleId == 1) {
+                  this.$router.push({name: 'userList'});
+                } else {
+                  this.$router.push({name: 'login'});
+                }
+              }
 
     }
   }
