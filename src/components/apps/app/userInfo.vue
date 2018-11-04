@@ -1,16 +1,5 @@
 <template>
-  <div>
-
-  username  是 string  用户名
-password  是 string  密码
-tel 是 string  手机
-ruleId  是 int 角色ID，1：管理员，2：代理人，3：子账号
-integral  是 int 积分
-consumeMultiple 是 int 积分消耗倍数
-pid 是 int 上级ID，如果是注册代理上级ID是管理员ID。如果是子账号上级ID是代理人ID
-realname  是 string  真实姓名
-
-
+  <div id="userInfo">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
       <el-form-item label="帐号" prop="username">
         <el-input v-model="ruleForm.username" size="mini"></el-input>
@@ -26,34 +15,28 @@ realname  是 string  真实姓名
       </el-form-item>
       <el-form-item label="角色" prop="ruleId">
         <el-radio-group v-model="ruleForm.ruleId" size="mini">
-          <el-radio label="代理人" value="2"></el-radio>
-          <el-radio label="子账号" value="3"></el-radio>
+          <el-radio label="2">代理人</el-radio>
+          <el-radio label="3">子帐号</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="代理列表" prop="region">
-        <el-select v-model="ruleForm.region" placeholder="请选择绑定代理" size="mini">
+
+      <el-form-item v-if="ruleForm.ruleId == 3" label="代理列表" prop="pid">
+        <el-select v-model="ruleForm.pid" placeholder="请选择绑定代理" size="mini">
           <el-option v-for="item in dailirenList" :label="item.username" :value="item.id" :key="item.id"></el-option>
         </el-select>
       </el-form-item>
 
-      <el-form-item label="即时配送" prop="delivery">
-        <el-switch v-model="ruleForm.delivery" size="mini"></el-switch>
+      <el-form-item label="积分" prop="integral">
+        <el-input v-model="ruleForm.integral" size="mini"></el-input>
       </el-form-item>
-      <el-form-item label="活动性质" prop="type">
-        <el-checkbox-group v-model="ruleForm.type" size="mini">
-          <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-          <el-checkbox label="地推活动" name="type"></el-checkbox>
-          <el-checkbox label="线下主题活动" name="type"></el-checkbox>
-          <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-        </el-checkbox-group>
+      <el-form-item label="吃码倍数" prop="consumeMultiple">
+        <el-input v-model="ruleForm.consumeMultiple" size="mini"></el-input>
       </el-form-item>
-      
-      <el-form-item label="活动形式" prop="desc">
-        <el-input type="textarea" v-model="ruleForm.desc" size="mini"></el-input>
-      </el-form-item>
+
       <el-form-item>
-        <el-button type="primary" @click="submitForm('ruleForm')" size="mini">立即创建</el-button>
-        <el-button @click="resetForm('ruleForm')" size="mini">重置</el-button>
+        <el-button v-if="isNew" type="primary" @click="createForm('ruleForm')" size="mini">创建</el-button>
+        <el-button v-if="!isNew" type="primary" @click="editeForm('ruleForm')" size="mini">保存</el-button>
+        <el-button v-if="isNew" @click="resetForm('ruleForm')" size="mini">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -67,6 +50,7 @@ export default {
   },
   data() {
       return {
+        isNew: this.$route.name == 'userCreate' ? true : false,
         ruleForm: {
           username: '',
           password: '',
@@ -74,7 +58,9 @@ export default {
           tel: '',
           ruleId: '',
           pid: '',
-
+          integral: '',
+          consumeMultiple: '',
+          
           region: '',
           date1: '',
           date2: '',
@@ -85,26 +71,26 @@ export default {
         },
         rules: {
           username: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+            { required: true, message: '请输入帐号', trigger: 'blur' },
+            { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' }
           ],
           password: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+            { required: true, message: '请输入密码', trigger: 'blur' },
+            { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' }
           ],
           realname: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
+            { required: true, message: '请输入姓名', trigger: 'blur' },
             { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
           ],
           tel: [
-            { required: true, message: '请输入活动名称', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+            { required: true, message: '请输入电话', trigger: 'blur' },
+            { min: 8, max: 11, message: '长度在 8 到 11 个字符', trigger: 'blur' }
           ],
-          region: [
-            { required: true, message: '请选择活动区域', trigger: 'change' }
+          ruleId: [
+            { required: true, message: '请选择角色', trigger: 'blur' }
           ],
-          resource: [
-            { required: true, message: '请选择活动资源', trigger: 'change' }
+          pid: [
+            { required: true, message: '请选择绑定代理', trigger: 'blur' }
           ]
         },
         dailirenList: []
@@ -120,7 +106,10 @@ export default {
     }),
   },
   methods: {
-     submitForm(formName) {
+    setRule(){
+      console.log('this.ruleForm.ruleId',this.ruleForm.ruleId);
+    },
+    submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             alert('submit!');
@@ -140,20 +129,6 @@ export default {
 
         this.dailirenList = res.data;
 
-//         consumeMultiple: 500
-// createDate: null
-// frozenStatus: 1
-// id: 5
-// ids: null
-// integral: 500
-// pUsername: null
-// periodsNum: 0
-// pid: 1
-// realname: "dsfsdf"
-// ruleId: 2
-// tel: "13426262626"
-// updateDate: "2018-10-29 11:43:34"
-// username: "fdsfsdf"
       }
     },
     async getUserList() {
@@ -194,5 +169,16 @@ export default {
 <style scoped>
 </style>
 <style lang="less">
+#userInfo {
+  .el-form-item {
+    margin-bottom: 6px;
+  }
+  .el-form-item__content {
+    margin-left: 80px !important;
+  }
 
+  .el-form-item__label {
+    width: 80px !important;
+  }
+}
 </style>
