@@ -20,6 +20,9 @@ const mutations = {
 
   updateuserInfo(state,v) {
     state.userInfo = v;
+  },
+  updateuserList(state,v) {
+    state.userList = v;
   }
 }
 

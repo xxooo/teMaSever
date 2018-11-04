@@ -92,23 +92,12 @@ export default {
 
         this.userList = res.page.list;
 
+        store.commit('updateuserList',res.page.list);
+
         for(let n in this.userList) {
           this.userList[n].fenValue = '';
         }
 
-//         consumeMultiple: 5555
-// createDate: "2018-10-29 11:38:33"
-// frozenStatus: 2
-// id: 4
-// ids: null
-// integral: 1050
-// pUsername: "dailiren4"
-// periodsNum: null
-// pid: null
-// ruleId: 2
-// tel: "131111111"
-// updateDate: null
-// username: "dailiren1"
       }
     }
   },

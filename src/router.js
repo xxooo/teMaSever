@@ -32,6 +32,18 @@ const router = new Router({
               requireAuth: true
           },
           component: r => require.ensure([], () => r(require('@/components/apps/app/userInfo')), 'userCreate'), meta: { requiresAuth: true }
+        },
+        { path: '/manage/historyList', name: 'historyList',
+          meta: {                                
+              requireAuth: true
+          },
+          component: r => require.ensure([], () => r(require('@/components/apps/app/historyList')), 'historyList'), meta: { requiresAuth: true }
+        },
+        { path: '/manage/historyList/historyInfo', name: 'historyInfo',
+          meta: {                                
+              requireAuth: true
+          },
+          component: r => require.ensure([], () => r(require('@/components/apps/app/historyInfo')), 'historyInfo'), meta: { requiresAuth: true }
         }
       ]
     }

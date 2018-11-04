@@ -6,7 +6,8 @@ const state = {
   untreated:0,//警告未处理
   avatarVuex: '',
 
-  userInfo: {}
+  userInfo: {},
+  userList: []
 }
 
 export default state

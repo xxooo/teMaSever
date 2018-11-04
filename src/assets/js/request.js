@@ -27,10 +27,10 @@ export default {
             };
             let res = await axios.get(url, opts);
 
-            if (res.data.code == 200) {
+            if (res.data.code == 0) {
                 //this.$success(res.data.msg);
             } else {
-                this.$error(res.data.msg);
+                //this.$error(res.data.msg);
                 
             } 
 
@@ -110,10 +110,10 @@ export default {
 
             let res = await axios.post(url, data, opts);
 
-            if (res.data.code == 200) {
+            if (res.data.code == 0) {
                 //this.$success(res.data.msg);
             } else {
-                this.$error(res.data.msg);
+                //this.$error(res.data.msg);
             } 
 
             return res.data; // {code: 0, result: {count: 0, rows: []}}

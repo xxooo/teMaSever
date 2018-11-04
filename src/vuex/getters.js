@@ -5,7 +5,8 @@ const getters = {
   getUntreated: state => state.untreated,
   getavatarVuex: state => state.avatarVuex,
 
-  getuserInfo: state => state.userInfo
+  getuserInfo: state => state.userInfo,
+  getuserList: state => state.userList
 }
 
 export default getters
