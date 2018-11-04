@@ -4,7 +4,9 @@ const state = {
   menus: [],
   boradFullTitle: 'wfwef',
   untreated:0,//警告未处理
-  avatarVuex: ''
+  avatarVuex: '',
+
+  userInfo: {}
 }
 
 export default state

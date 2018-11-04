@@ -56,7 +56,15 @@ export default {
   beforeDestroy() {
   },
   methods: {
-    goUserInfo() {
+    goUserInfo(item) {
+
+      store.commit('updateuserInfo',item);
+            router.push({
+              name: 'userEdit',
+              params: {
+                id: item.id
+              }
+            })
 
     },
     async updateFen(item) {

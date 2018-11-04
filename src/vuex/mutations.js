@@ -16,6 +16,10 @@ const mutations = {
   },
   updateavatarVuex(state,v) {
     state.avatarVuex = v;
+  },
+
+  updateuserInfo(state,v) {
+    state.userInfo = v;
   }
 }
 
