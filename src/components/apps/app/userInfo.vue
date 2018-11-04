@@ -1,21 +1,20 @@
 <template>
-  <div id="userList">
-      <el-table :data="userList"  style="width: 100%">
-        <el-table-column prop="username" label="帐户" width="100%">
+      <el-table :data="userList">
+        <el-table-column prop="username" label="帐户">
         </el-table-column>
         <!-- <el-table-column prop="realname" label="姓名">
         </el-table-column> -->
-        <el-table-column prop="integral" label="积分" width="100%">
+        <el-table-column prop="integral" label="积分">
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <template v-if="fenStatus">
-              <el-button size="mini" class="optionBtn" @click="addFen()">充值</el-button>
-              <el-button size="mini" class="optionBtn" @click="goUserInfo(scope.row)">详情</el-button>
+              <el-button size="mini" @click="addFen()">充值</el-button>
+              <el-button size="mini" @click="subFen()">扣分</el-button>
             </template>
             <template v-else>
-              <el-input v-model="scope.row.fenValue" size="mini" width="50%"></el-input>
-            <el-button size="mini" @click="updateFen(scope.row)">充值</el-button>
+              <el-input v-model="sizeForm.name"></el-input>
+            <el-button size="mini" @click="updateFen(scope.row)">确认</el-button>
             </template>
           </template>
         </el-table-column>
@@ -30,7 +29,6 @@
           </template>
         </el-table-column> -->
       </el-table>
-  </div>
 </template>
 
 <script>
@@ -42,8 +40,7 @@ export default {
       return {
         userList: [],
         fenStatus: true,
-        optionFen: '',
-        fenValue: ''
+        optionFen: ''
       }
   },
   async created() {
@@ -56,23 +53,13 @@ export default {
   beforeDestroy() {
   },
   methods: {
-    goUserInfo() {
-
-    },
     async updateFen(item) {
 
-      let obj = {
-        id: item.id,
-        integral: item.fenValue
-      }
-
-      let res = await this.$post(`${window.url}/api/recharge`, obj);
-              if(res.code === 0) {
-                //this.$router.push({name: 'userAgreement'});
-                this.getUserList();
-              }
 
       this.fenStatus = true;
+    },
+    subFen() {
+      this.fenStatus = false;
     },
     addFen() {
       this.fenStatus = false;
@@ -83,10 +70,6 @@ export default {
       if(res.code===0){
 
         this.userList = res.page.list;
-
-        for(let n in this.userList) {
-          this.userList[n].fenValue = '';
-        }
 
 //         consumeMultiple: 5555
 // createDate: "2018-10-29 11:38:33"
@@ -114,26 +97,7 @@ export default {
 
 </script>
 <style scoped>
-
-/*.optionBtn {
-  width: 30%;
-}*/
 </style>
 <style lang="less">
-#userList {
-  .el-button+.el-button {
-    margin-left: 0px; 
-  }
-
-  .el-button--mini, .el-button--mini.is-round {
-      padding: 7px 7px;
-  }
-  .el-input {
-    width: 45%;
-  }
-  .el-input__inner {
-    padding: 0 2px;
-  }
-}
 
 </style>

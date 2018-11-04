@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import App from './App';
 import router from './router.js';
+import store from './vuex/store';
 import $ from 'jquery'
 import axios from 'axios';
 import ElementUI from 'element-ui';
@@ -20,6 +21,7 @@ Vue.config.productionTip = false;
 
 window.router = router;
 window.axios = axios;
+window.store = store;
 window._g = _g;
 window.cookie = cookie;
 const bus = new Vue();
@@ -30,6 +32,7 @@ window.bus = bus;
     window.getVue = new Vue({
       el: '#app',
       router,
+      store,
       components: { App },
       template: '<App/>'
     });

@@ -58,7 +58,8 @@ export default {
     if (window.ENV == 'dev') {
 
       //console.log('研发自动登录');
-      this.logindev();
+      //this.logindev();
+      this.$router.push({name: 'userList'});
     } else {
       //普通用户登录
        //this.$router.push({name: 'login'});

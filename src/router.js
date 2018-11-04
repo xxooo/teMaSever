@@ -20,6 +20,12 @@ const router = new Router({
               requireAuth: true
           },
           component: r => require.ensure([], () => r(require('@/components/apps/app/userList')), 'userList'), meta: { requiresAuth: true }
+        },
+        { path: '/manage/userList/userEdit/:id', name: 'userEdit',
+          meta: {                                
+              requireAuth: true
+          },
+          component: r => require.ensure([], () => r(require('@/components/apps/app/userInfo')), 'userEdit'), meta: { requiresAuth: true }
         }
       ]
     }
