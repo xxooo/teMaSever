@@ -1,6 +1,12 @@
 <template>
   <div id="userList">
-      <el-table :data="userList"  style="width: 100%">
+      <el-row :gutter="20">
+        <el-col :span="4"><span>搜索:</span></el-col>
+        <el-col :span="20">
+          <el-input placeholder="请输入内容" size="mini" v-model.trim="searchMenuRole" clearable></el-input>
+        </el-col>
+      </el-row>
+      <el-table :data="filterList"  style="width: 100%">
         <el-table-column prop="username" label="帐户" width="100%">
         </el-table-column>
         <!-- <el-table-column prop="realname" label="姓名">
@@ -43,7 +49,8 @@ export default {
         userList: [],
         fenStatus: true,
         optionFen: '',
-        fenValue: ''
+        fenValue: '',
+        searchMenuRole: ''
       }
   },
   async created() {
@@ -52,6 +59,14 @@ export default {
 
   },
   computed: {
+    filterList() {
+        let that = this;
+        let objList = [];
+        objList = that.userList.filter(function(item) {
+          return item.username && item.username.toLocaleLowerCase().indexOf(that.searchMenuRole.toLocaleLowerCase()) !== -1
+        });
+        return objList;
+      }
   },
   beforeDestroy() {
   },

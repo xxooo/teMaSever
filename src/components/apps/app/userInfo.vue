@@ -26,6 +26,10 @@
         </el-select>
       </el-form-item>
 
+      <el-form-item label="冻结状态">
+        <el-switch v-model="ifFrozen"></el-switch>
+      </el-form-item>
+
       <el-form-item label="积分" prop="integral">
         <el-input v-model="ruleForm.integral" size="mini" :disabled="!isNew"></el-input>
       </el-form-item>
@@ -51,6 +55,7 @@ export default {
   },
   data() {
       return {
+        ifFrozen: true,
         isNew: this.$route.name == 'userCreate' ? true : false,
         ruleForm: {
           username: '',
@@ -60,6 +65,7 @@ export default {
           ruleId: '2',
           pid: '1',
           integral: '',
+          frozenStatus: '1',
           consumeMultiple: ''
         },
         rules: {
@@ -100,7 +106,7 @@ export default {
   computed: {
     ...mapGetters({
         userInfo: 'getuserInfo'
-    }),
+    })
   },
   methods: {
     editeForm(formName) {
@@ -111,7 +117,8 @@ export default {
         password: this.ruleForm.password,
         tel: this.ruleForm.tel,
         realname: this.ruleForm.realname,
-        consumeMultiple: this.ruleForm.consumeMultiple
+        consumeMultiple: this.ruleForm.consumeMultiple,
+        frozenStatus: this.ifFrozen ? '1' : '2'
       }
 
       this.$refs[formName].validate(async(valid) =>  {
@@ -165,6 +172,8 @@ export default {
       this.ruleForm.pid = this.userInfo.pid+'';
       this.ruleForm.integral = this.userInfo.integral;
       this.ruleForm.consumeMultiple = this.userInfo.consumeMultiple;
+
+      this.ifFrozen = this.userInfo.frozenStatus == '1' ? true : false;
 
       console.log('this.ruleForm',this.ruleForm);
 

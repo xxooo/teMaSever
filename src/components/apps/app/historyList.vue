@@ -53,16 +53,17 @@ export default {
       return {
         timeRange: '',
         userId: '',
-        hisType: ''
+        hisType: '',
+        userList: []
       }
   },
   async created() {
-
+    this.getUserList();
   },
   computed: {
-    ...mapGetters({
-        userList: 'getuserList'
-    }),
+    // ...mapGetters({
+    //     userList: 'getuserList'
+    // }),
   },
   beforeDestroy() {
   },
@@ -71,15 +72,80 @@ export default {
 
       console.log('this.timeRange',this.timeRange);
 
-      //  api/orderList?userId=1&dateStart=2018-10-29 19:36:47&dateEnd=2018-10-30 20:25:19&type=1&page=1&limit=5
-
-      let res = await this.$get(`${window.url}/api/orderList?userId=`+this.userId+`&dateStart=`+this.timeRange[0]+`&dateEnd=`+this.timeRange[0]+`&type=`+this.hisType+`page=1&limit=10000`);
+      let res = await this.$get(`${window.url}/api/orderList?userId=`+this.userId+`&dateStart=`+this.timeRange[0]+`&dateEnd=`+this.timeRange[1]+`&type=`+this.hisType+`&page=1&limit=10000`);
 
       if(res.code===0){
+
+        if() {
+
+        }
+
+//         createDate: "2018-10-30 20:24:20"
+// id: null
+// maimaName: "01马"
+// money: 500
+// periodsNum: null
+// remark: null
+// updateDate: null
+// userId: null
+// username: "123456"
+
+
+// "data": {
+//         "totalCount": 2,
+//         "pageSize": 5,
+//         "totalPage": 1,
+//         "currPage": 1,
+//         "list": [
+//             {
+//                 "id": null,
+//                 "maimaName": null,
+//                 "money": null,
+//                 "userId": null,
+//                 "remark": null,
+//                 "periodsNum": null,
+//                 "createDate": "2018-10-30 20:20:53",//创建时间
+//                 "updateDate": null,
+//                 "moneySum": 400,//金额
+//                 "username": "admin"//代理人名称
+//             },
+
+
+
+
+//             "data": {
+//         "totalCount": 2,
+//         "pageSize": 5,
+//         "totalPage": 1,
+//         "currPage": 1,
+//         "list": [
+//             {
+//                 "id": null,
+//                 "maimaName": null,
+//                 "money": null,
+//                 "risk": null,
+//                 "userId": null,
+//                 "periodsNum": null,
+//                 "createDate": "2018-10-30 20:20:53",//创建时间
+//                 "updateDate": null,
+//                 "moneySum": 400,//金额
+//                 "username": "admin"//代理人名称
+//             },
+
+
 
 
       }
 
+    },
+    async getUserList() {
+      let res = await this.$get(`${window.url}/api/allUserList?page=0&limit=10000`);
+
+      if(res.code===0){
+
+        this.userList = res.page.list;
+
+      }
     }
   },
   mounted() {

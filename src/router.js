@@ -33,6 +33,12 @@ const router = new Router({
           },
           component: r => require.ensure([], () => r(require('@/components/apps/app/userInfo')), 'userCreate'), meta: { requiresAuth: true }
         },
+        { path: '/manage/userList/importExport', name: 'importExport',
+          meta: {                                
+              requireAuth: true
+          },
+          component: r => require.ensure([], () => r(require('@/components/apps/app/importExport')), 'importExport'), meta: { requiresAuth: true }
+        },
         { path: '/manage/historyList', name: 'historyList',
           meta: {                                
               requireAuth: true
