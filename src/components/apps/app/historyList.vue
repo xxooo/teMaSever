@@ -40,6 +40,38 @@
         <el-button @click="getHistory()" size="mini">查询</el-button>
       </el-col>
     </el-row>
+
+    <el-table :data="filterList"  style="width: 100%">
+        <el-table-column prop="username" label="帐户" width="100%">
+        </el-table-column>
+        <!-- <el-table-column prop="realname" label="姓名">
+        </el-table-column> -->
+        <el-table-column prop="integral" label="积分" width="100%">
+        </el-table-column>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <template v-if="fenStatus">
+              <el-button size="mini" class="optionBtn" @click="addFen()">充值</el-button>
+              <el-button size="mini" class="optionBtn" @click="goUserInfo(scope.row)">详情</el-button>
+            </template>
+            <template v-else>
+              <el-input v-model="scope.row.fenValue" size="mini" width="50%"></el-input>
+            <el-button size="mini" @click="updateFen(scope.row)">充值</el-button>
+            </template>
+          </template>
+        </el-table-column>
+        <!-- <el-table-column label="角色">
+          <template slot-scope="scope">
+            <span>{{scope.row.ruleId==1?'管理员':scope.row.ruleId==2?'代理人':'子帐号'}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="冻结">
+          <template slot-scope="scope">
+            <span>{{scope.row.frozenStatus==1?'未冻结':'已冻结'}}</span>
+          </template>
+        </el-table-column> -->
+    </el-table>
+
   </div>
 </template>
 
@@ -54,7 +86,8 @@ export default {
         timeRange: '',
         userId: '',
         hisType: '',
-        userList: []
+        userList: [],
+        ziHis: 
       }
   },
   async created() {
@@ -76,7 +109,9 @@ export default {
 
       if(res.code===0){
 
-        if() {
+        if(this.hisType == '1') {
+
+
 
         }
 
