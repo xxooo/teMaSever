@@ -41,36 +41,45 @@
       </el-col>
     </el-row>
 
-    <el-table :data="filterList"  style="width: 100%">
-        <el-table-column prop="username" label="帐户" width="100%">
+    <el-table :data="ziHis" v-if="hisType=='1'">
+        <el-table-column prop="createDate" label="创建时间">
         </el-table-column>
-        <!-- <el-table-column prop="realname" label="姓名">
-        </el-table-column> -->
-        <el-table-column prop="integral" label="积分" width="100%">
+        <el-table-column prop="maimaName" label="选码">
         </el-table-column>
-        <el-table-column label="操作">
-          <template slot-scope="scope">
-            <template v-if="fenStatus">
-              <el-button size="mini" class="optionBtn" @click="addFen()">充值</el-button>
-              <el-button size="mini" class="optionBtn" @click="goUserInfo(scope.row)">详情</el-button>
-            </template>
-            <template v-else>
-              <el-input v-model="scope.row.fenValue" size="mini" width="50%"></el-input>
-            <el-button size="mini" @click="updateFen(scope.row)">充值</el-button>
-            </template>
-          </template>
+        <el-table-column prop="money" label="金额">
         </el-table-column>
-        <!-- <el-table-column label="角色">
-          <template slot-scope="scope">
-            <span>{{scope.row.ruleId==1?'管理员':scope.row.ruleId==2?'代理人':'子帐号'}}</span>
-          </template>
+        <el-table-column prop="username" label="代理人">
         </el-table-column>
-        <el-table-column label="冻结">
-          <template slot-scope="scope">
-            <span>{{scope.row.frozenStatus==1?'未冻结':'已冻结'}}</span>
-          </template>
-        </el-table-column> -->
     </el-table>
+
+    <el-table :data="zongheHis" v-if="hisType=='2'">
+        <el-table-column prop="createDate" label="创建时间">
+        </el-table-column>
+        <el-table-column label="详情">
+          <template slot-scope="scope">
+            <template>
+              <el-button size="mini" class="optionBtn" @click="lookInfo(scope.row)">查看</el-button>
+            </template>
+          </template>
+        </el-table-column>
+        <el-table-column prop="username" label="代理人">
+        </el-table-column>
+    </el-table>
+
+    <el-table :data="chimaHis" v-if="hisType=='3'">
+        <el-table-column prop="createDate" label="创建时间">
+        </el-table-column>
+        <el-table-column label="详情">
+          <template slot-scope="scope">
+            <template>
+              <el-button size="mini" class="optionBtn" @click="lookInfo(scope.row)">查看</el-button>
+            </template>
+          </template>
+        </el-table-column>
+        <el-table-column prop="username" label="代理人">
+        </el-table-column>
+    </el-table>
+
 
   </div>
 </template>
@@ -87,7 +96,9 @@ export default {
         userId: '',
         hisType: '',
         userList: [],
-        ziHis: 
+        ziHis: [],
+        zongheHis: [],
+        chimaHis: []
       }
   },
   async created() {
@@ -101,19 +112,32 @@ export default {
   beforeDestroy() {
   },
   methods: {
+    async lookInfo(row) {
+
+      let res = await this.$get(`${window.url}/api/orderInfo?userId=`+row.userId+`&createDate=`+row.createDate+`&type=`+this.hisType);
+
+     // /api/orderInfo?userId=1&createDate=2018-10-30 20:20:53&type=2
+
+      if(res.code == 0){
+      }
+    },
     async getHistory() {
 
       console.log('this.timeRange',this.timeRange);
 
       let res = await this.$get(`${window.url}/api/orderList?userId=`+this.userId+`&dateStart=`+this.timeRange[0]+`&dateEnd=`+this.timeRange[1]+`&type=`+this.hisType+`&page=1&limit=10000`);
 
-      if(res.code===0){
+      if(res.code == 0){
 
         if(this.hisType == '1') {
-
-
-
+          this.ziHis = res.data.list;
+        } else  if(this.hisType == '2') {
+          this.zongheHis = res.data.list;
+        } else if(this.hisType == '3') {
+          this.chimaHis = res.data.list;
         }
+
+
 
 //         createDate: "2018-10-30 20:24:20"
 // id: null
@@ -166,6 +190,20 @@ export default {
 //                 "moneySum": 400,//金额
 //                 "username": "admin"//代理人名称
 //             },
+
+
+ // "list": [
+ //            {
+ //                "id": null,
+ //                "maimaName": null,
+ //                "money": null,
+ //                "risk": null,
+ //                "userId": null,
+ //                "periodsNum": null,
+ //                "createDate": "2018-10-30 20:20:53",//创建时间
+ //                "updateDate": null,
+ //                "moneySum": 400,//金额
+ //                "username": "admin"//代理人名称
 
 
 

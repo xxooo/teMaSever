@@ -11,8 +11,8 @@ window.globalConfig = conf;
 
 
 //window.url = 'http://192.168.0.105:8888';
-//window.url = 'http://47.106.13.12:8011';		//部署
-window.url = ''; 								//本地
+window.url = 'http://47.106.13.12:8011';		//部署
+//window.url = ''; 								//本地
 //获取博彩信息刷新频率					
 window.refreshTime = 20000;
 
