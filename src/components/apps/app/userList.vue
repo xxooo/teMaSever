@@ -90,10 +90,9 @@ export default {
       }
 
       let res = await this.$post(`${window.url}/api/recharge`, obj);
-              if(res.code === 0) {
-                //this.$router.push({name: 'userAgreement'});
-                this.getUserList();
-              }
+      if(res.code === 0) {
+        this.getUserList();
+      }
 
       this.fenStatus = true;
     },
